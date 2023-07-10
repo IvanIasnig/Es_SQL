@@ -48,6 +48,17 @@ VALUES
 
 QUERY	
 
-SELECT Nome, Cognome FROM Clienti WHERE EXTRACT(DAY FROM DataNascita) = 1982;
+es1 -> Estrarre il nome e il cognome dei clienti nati nel 1982
+SELECT Nome, Cognome FROM Clienti WHERE EXTRACT(YEAR FROM DataNascita) = 1982;
 
+es2 -> Estrarre il numero delle fatture con iva al 20%
 SELECT COUNT(*) FROM Fatture WHERE Iva = 20;
+
+es3 -> Riportare il numero di fatture e la somma dei relativi importi divisi per anno di fatturazione
+SELECT EXTRACT(YEAR FROM DataFattura) AS AnnoFattura, COUNT(*), SUM(Importo) FROM Fatture GROUP BY AnnoFattura;
+
+es4 -> Estrarre i prodotti attivati nel 2017 e che sono in produzione oppure in commercio
+SELECT * FROM Prodotti WHERE EXTRACT(YEAR FROM DataAttivazione) = 2017 AND (InProduzione = TRUE OR InCommercio = TRUE);
+
+es5 -> Considerando soltanto le fatture con iva al 20 per cento, estrarre il numero di fatture per ogni anno
+SELECT EXTRACT(YEAR FROM DataFattura) AS AnnoFattura, COUNT(*) FROM Fatture WHERE Iva = 20 GROUP BY AnnoFattura;
