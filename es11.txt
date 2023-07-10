@@ -1,0 +1,53 @@
+CREATE TABLE Clienti (
+    NumeroCliente INT PRIMARY KEY,
+    Nome VARCHAR(50),
+    Cognome VARCHAR(50),
+    DataNascita DATE,
+    RegioneResidenza VARCHAR(50)
+);
+
+CREATE TABLE Fornitori (
+    NumeroFornitore INT PRIMARY KEY,
+    Denominazione VARCHAR(50),
+    RegioneResidenza VARCHAR(50)
+);
+
+CREATE TABLE Prodotti (
+    IdProdotto INT PRIMARY KEY,
+    Descrizione TEXT,
+    InProduzione BOOLEAN,
+    InCommercio BOOLEAN,
+    DataAttivazione DATE,
+    DataDisattivazione DATE
+);
+
+CREATE TABLE Fatture (
+    NumeroFattura INT PRIMARY KEY,
+    Tipologia CHAR(1),
+    Importo DECIMAL(10,2),
+    Iva DECIMAL(10,2),
+    IdCliente INT REFERENCES Clienti(NumeroCliente),
+    DataFattura DATE,
+    NumeroFornitore INT REFERENCES Fornitori(NumeroFornitore)
+);
+
+esesmpio di inserimento dei fornitori (stessa cosa per le quattro altre tabelle)
+
+INSERT INTO Fornitori (NumeroFornitore, Denominazione, RegioneResidenza)
+VALUES 
+(1, 'Fornitore Uno', 'Lombardia'),
+(2, 'Fornitore Due', 'Lazio'),
+(3, 'Fornitore Tre', 'Campania'),
+(4, 'Fornitore Quattro', 'Sicilia'),
+(5, 'Fornitore Cinque', 'Veneto'),
+(6, 'Fornitore Sei', 'Emilia-Romagna'),
+(7, 'Fornitore Sette', 'Piemonte'),
+(8, 'Fornitore Otto', 'Puglia'),
+(9, 'Fornitore Nove', 'Toscana'),
+(10, 'Fornitore Dieci', 'Calabria');
+
+QUERY	
+
+SELECT Nome, Cognome FROM Clienti WHERE EXTRACT(DAY FROM DataNascita) = 1982;
+
+SELECT COUNT(*) FROM Fatture WHERE Iva = 20;
