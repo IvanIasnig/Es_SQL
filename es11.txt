@@ -62,3 +62,18 @@ SELECT * FROM Prodotti WHERE EXTRACT(YEAR FROM DataAttivazione) = 2017 AND (InPr
 
 es5 -> Considerando soltanto le fatture con iva al 20 per cento, estrarre il numero di fatture per ogni anno
 SELECT EXTRACT(YEAR FROM DataFattura) AS AnnoFattura, COUNT(*) FROM Fatture WHERE Iva = 20 GROUP BY AnnoFattura;
+
+es6 -> Estrarre gli anni in cui sono state registrate più di 2 fatture con tipologia `A'
+SELECT EXTRACT(YEAR FROM DataFattura) AS AnnoFattura FROM Fatture WHERE Tipologia = 'A' GROUP BY AnnoFattura HAVING COUNT(*) > 2;
+
+es7 -> Riportare l'elenco delle fatture (numero, importo, iva e data) con in aggiunta il nome del fornitore
+SELECT f.NumeroFattura, f.Importo, f.Iva, f.DataFattura, fo.Denominazione FROM Fatture f INNER JOIN Fornitori fo ON f.NumeroFornitore = fo.NumeroFornitore;
+
+es8 -> Estrarre il totale degli importi delle fatture divisi per residenza dei clienti
+SELECT c.RegioneResidenza, SUM(f.Importo) FROM Fatture f INNER JOIN Clienti c ON f.IdCliente = c.NumeroCliente GROUP BY c.RegioneResidenza;
+
+es9 -> Estrarre il numero dei clienti nati nel 1980 che hanno almeno una fattura superiore a 50 euro
+SELECT COUNT(DISTINCT c.NumeroCliente) FROM Clienti c INNER JOIN Fatture f ON c.NumeroCliente = f.IdCliente WHERE EXTRACT(YEAR FROM c.DataNascita) = 1980 AND f.Importo > 50;
+
+es10 -> Estrarre una colonna di nome "Denominazione" contenente il nome, seguito da un carattere "-", seguito dal cognome, per i soli clienti residenti nella regione Lombardia
+SELECT CONCAT(Nome, ' - ', Cognome) AS Denominazione FROM Clienti WHERE RegioneResidenza = 'Lombardia';
